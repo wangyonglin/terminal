@@ -1,0 +1,9 @@
+AUTOMAKE_OPTIONS=foreign
+SUBDIRS = src/ccl src/mqtt src/cjson src/wangyonglin app
+bindir =    $(prefix)/bin
+libdir =    $(prefix)/lib
+logdir =    $(prefix)/log
+confdir =   $(prefix)/conf
+datadir=    $(prefix)/share
+sysconfdir= $(prefix)/etc
+includedir= $(prefix)/include
