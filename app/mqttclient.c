@@ -1,10 +1,14 @@
 #include <wangyonglin/config.h>
 #include <wangyonglin/core.h>
+#include <mqttclient.h> 
 #include <mqtt/MQTTPacket.h>
 #include <mqtt/transport.h>
 
 
+typedef int (*callbacl_t)(unsigned char * data,int len) ;
 unsigned char buf[200];
+callbacl_t __call;
+
 int wangyonglin_mqtt_loop(int (*getfn)(unsigned char*, int));
 
 int wangyonglin_mqtt_connect(int sockfd,MQTTPacket_connectData *data,int (*getfn)(unsigned char*, int)){
@@ -65,6 +69,7 @@ int wangyonglin_mqtt_loop(int (*getfn)(unsigned char*, int)){
 		int payloadlen_in;
 		unsigned char* payload_in;
 		int rc;
+       // bzero(payload_in,sizeof(payload_in));
         MQTTString receivedTopic;
 
 
@@ -123,13 +128,22 @@ int wangyonglin_mqtt_loop(int (*getfn)(unsigned char*, int)){
                 break;
             case PUBLISH:
                  fprintf(stdout,"PUBLISH ... ok\n");
+                
 			        rc = MQTTDeserialize_publish(&dup, &qos, &retained, &msgid, &receivedTopic,
 					&payload_in, &payloadlen_in, buf, buflen);
-			printf("message arrived %.*s\n", payloadlen_in, payload_in);
+			//printf("message arrived %.*s\n", payloadlen_in, payload_in);
+            if(__call!=NULL){
+                __call(payload_in,payloadlen_in);
+            }
                 break;
             default:
                 break;
         }
 
         return 0;
+}
+
+int wangyonglin_mqttclient_addcallback(int (*call)(unsigned char * data,int len)){
+    __call = call;
+    return 0;
 }

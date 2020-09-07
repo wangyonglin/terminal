@@ -3,8 +3,15 @@
 #include <wangyonglin/config.h>
 #include <wangyonglin/core.h>
 
+typedef struct {
+    int (*publish)(unsigned char * data , int len);
+}wangyonglin_mqttclient_callback_t;
+
 #include <mqtt/MQTTPacket.h>
 #include <mqtt/transport.h>
+
+
+
 
 int wangyonglin_mqtt_connect(int sockfd,MQTTPacket_connectData *data,int (*getfn)(unsigned char*, int));
 int wangyonglin_mqtt_subscribe(int sockfd,MQTTString *topicString,int (*getfn)(unsigned char*, int));

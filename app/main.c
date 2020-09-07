@@ -1,19 +1,10 @@
 #include <wangyonglin/config.h>
 #include <wangyonglin/core.h>
 #include <mqttclient.h>
-
 #include <mqtt/MQTTPacket.h>
 #include <mqtt/transport.h>
 #include <signal.h>
-#define ADDRESS     "tcp://a1pfKiaC8Ee.iot-as-mqtt.cn-shanghai.aliyuncs.com:1883"
-#define CLIENTID    "320921198808117132|securemode=3,signmethod=hmacsha1|"
-#define USERNAME    "A001&a1pfKiaC8Ee"
-#define PASSWORD    "A8D188259569BB9A7B385E6F4F97C7693E6ECAC1"
-#define TOPIC       "/a1pfKiaC8Ee/A001/user/get"
-#define PAYLOAD     "Hello World!"
-#define QOS         1
-#define TIMEOUT     10000L
-#define KEEPALIVE_INTERVAL 30
+
 static	int sockfd;
 int toStop = 0;
 
@@ -35,23 +26,47 @@ int __defultcallback(unsigned char* buf, int count)
 	//wangyonglin_log_info("received %d bytes count %d  \n", rc, (int)count);
 	return rc;
 }
+int __mqtt_publistcallback(unsigned char * data , int len){
+
+	wangyonglin_log_info("###MQTT RECV : %.*s",len,data);
+	return 1;
+}
 int main(int argc, char *argv[])
 {
+	wangyonglin_log_t log_t;
+	wangyonglin_pid_t pid_t;
+	wangyonglin_mqtt_t mqtt_t;
+
+	fprintf(stdout,"hello terminal !\n");
+	wangyonglin_conf_open("/usr/local/terminal/conf/example.conf");
+	strcpy(log_t.access,wangyonglin_conf_read("access_log"));
+	strcpy(log_t.error,wangyonglin_conf_read("error_log"));
+	strcpy(pid_t.pidname,wangyonglin_conf_read("terminal_pid"));
+	strcpy(mqtt_t.addr,wangyonglin_conf_read("mqtt_address"));
+	mqtt_t.hort=atoi(wangyonglin_conf_read("mqtt_hort"));
+	strcpy(mqtt_t.clientid,wangyonglin_conf_read("mqtt_clientid"));
+	strcpy(mqtt_t.username,wangyonglin_conf_read("mqtt_username"));
+	strcpy(mqtt_t.passwrod,wangyonglin_conf_read("mqtt_passwrod"));
+	strcpy(mqtt_t.topic,wangyonglin_conf_read("mqtt_topic"));
+	mqtt_t.qos=atoi(wangyonglin_conf_read("mqtt_qos"));
+	mqtt_t.timeout=atoi(wangyonglin_conf_read("mqtt_timeout"));
+	mqtt_t.keepalive_interval=atoi(wangyonglin_conf_read("mqtt_keepalive_interval"));
+	wangyonglin_log_init(&log_t);
+	wangyonglin_pid_create(&pid_t);
 	wangyonglin_timeout_t __tt;
 	wangyonglin_timeout_init(&__tt);
-	char *host = "a1pfKiaC8Ee.iot-as-mqtt.cn-shanghai.aliyuncs.com";
-	int port = 1883;
+	wangyonglin_daemon();
 	MQTTPacket_connectData data = MQTTPacket_connectData_initializer;
 	MQTTString topicString = MQTTString_initializer;
-	data.clientID.cstring = CLIENTID;
+	data.clientID.cstring = mqtt_t.clientid;
 	data.willFlag=0;
-	data.keepAliveInterval = KEEPALIVE_INTERVAL;
+	data.keepAliveInterval = mqtt_t.keepalive_interval;
 	data.cleansession = 1;
 	data.MQTTVersion = 3;
-	data.username.cstring = USERNAME;
-	data.password.cstring = PASSWORD;
+	data.username.cstring = mqtt_t.username;
+	data.password.cstring = mqtt_t.passwrod;
 	stop_init();
-	 if((sockfd=wangyonglin_socket_connect(host,port)) == -1){
+	 if((sockfd=wangyonglin_socket_connect(mqtt_t.addr,mqtt_t.hort)) == -1){
 		 fprintf(stderr,"wangyonglin_socket_connect res %d \n",sockfd);
 		 exit(EXIT_FAILURE);
 	 }
@@ -60,10 +75,10 @@ int main(int argc, char *argv[])
 		fprintf(stderr,"wangyonglin_mqtt_connect falt \n");
 		goto exit;
 	}
+	wangyonglin_mqttclient_addcallback(__mqtt_publistcallback);
+	__tt.start(mqtt_t.keepalive_interval);
 
-	__tt.start(KEEPALIVE_INTERVAL);
-/* subscribe */
-	topicString.cstring = TOPIC;
+	topicString.cstring = mqtt_t.topic;
 	if(wangyonglin_mqtt_subscribe(sockfd,&topicString,__defultcallback)==-1){
 		fprintf(stderr,"wangyonglin_mqtt_subscribe falt \n");
 		goto exit;
@@ -78,7 +93,7 @@ int main(int argc, char *argv[])
 				fprintf(stderr,"wangyonglin_mqtt_pingreq falt \n");
 				goto exit;
 			}
-			__tt.start(KEEPALIVE_INTERVAL);
+			__tt.start(mqtt_t.keepalive_interval);
 		
 		}
 		
@@ -86,8 +101,10 @@ int main(int argc, char *argv[])
 
 	fprintf(stdout,"wangyonglin_mqtt_disconnect\n");
 	wangyonglin_mqtt_disconnect(sockfd,__defultcallback);
+
 	exit:
 		fprintf(stderr,"wangyonglin_socket_disconnect\n");
 		wangyonglin_socket_disconnect(sockfd);
+		
 	return EXIT_SUCCESS;
 }

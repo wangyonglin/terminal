@@ -10,7 +10,7 @@ typedef struct wangyonglin_conf_s wangyonglin_conf_t;
 typedef struct wangyonglin_log_s wangyonglin_log_t;
 typedef struct wangyonglin_time_s wangyonglin_time_t;
 typedef struct wangyonglin_timeout_s wangyonglin_timeout_t;
-
+typedef struct wangyonglin_mqtt_s wangyonglin_mqtt_t;
 
 #define  wangyonglin_result_success     0
 #define  wangyonglin_result_failure     -1
@@ -31,7 +31,7 @@ typedef struct wangyonglin_timeout_s wangyonglin_timeout_t;
 #include <wangyonglin/log.h>
 #include <wangyonglin/json.h>
 #include <wangyonglin/uart.h>
-
+#include <wangyonglin/mqtt.h>
 
 
 #endif /**_WANGYONGLIN_CORE_H_INCLUDE_**/

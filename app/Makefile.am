@@ -3,9 +3,9 @@ bin_PROGRAMS=terminal
 terminal_SOURCES=main.c httpserver.c jsonresult.c mqttclient.c
 AM_CPPFLAGS=-I ../include/
 terminal_LDADD= \
-    ../src/ccl/libccl.la \
-    ../src/mqtt/libmqtt.la \
-    ../src/cjson/libjson.la \
-    ../src/wangyonglin/libcore.la \
+    $(top_srcdir)/src/ccl/libccl.la \
+    $(top_srcdir)/src/mqtt/libmqtt.la \
+    $(top_srcdir)/src/cjson/libjson.la \
+    $(top_srcdir)/src/wangyonglin/libcore.la \
     $(FLIBS)
 LIBS += -lm -levent

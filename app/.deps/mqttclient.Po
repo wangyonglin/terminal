@@ -79,11 +79,11 @@ mqttclient.o: mqttclient.c /usr/include/stdc-predef.h \
  ../include/wangyonglin/conf.h ../include/wangyonglin/time.h \
  ../include/wangyonglin/string.h ../include/wangyonglin/file.h \
  ../include/wangyonglin/log.h ../include/wangyonglin/json.h \
- ../include/wangyonglin/uart.h ../include/mqtt/MQTTPacket.h \
- ../include/mqtt/MQTTConnect.h ../include/mqtt/MQTTPublish.h \
- ../include/mqtt/MQTTSubscribe.h ../include/mqtt/MQTTUnsubscribe.h \
- ../include/mqtt/MQTTFormat.h ../include/mqtt/StackTrace.h \
- ../include/mqtt/transport.h
+ ../include/wangyonglin/uart.h ../include/wangyonglin/mqtt.h mqttclient.h \
+ ../include/mqtt/MQTTPacket.h ../include/mqtt/MQTTConnect.h \
+ ../include/mqtt/MQTTPublish.h ../include/mqtt/MQTTSubscribe.h \
+ ../include/mqtt/MQTTUnsubscribe.h ../include/mqtt/MQTTFormat.h \
+ ../include/mqtt/StackTrace.h ../include/mqtt/transport.h
 
 /usr/include/stdc-predef.h:
 
@@ -398,6 +398,10 @@ mqttclient.o: mqttclient.c /usr/include/stdc-predef.h \
 ../include/wangyonglin/json.h:
 
 ../include/wangyonglin/uart.h:
+
+../include/wangyonglin/mqtt.h:
+
+mqttclient.h:
 
 ../include/mqtt/MQTTPacket.h:
 

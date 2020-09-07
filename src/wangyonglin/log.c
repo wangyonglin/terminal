@@ -2,27 +2,27 @@
 #include <wangyonglin/core.h>
 wangyonglin_log_t * __log_t;
 void wangyonglin_log_info(const char *format, ...){
-	if(__log_t->access_log == NULL && __log_t->access_log  == ""){
+	if(__log_t->access == NULL && __log_t->access  == ""){
 		fprintf(stderr,"_log_t->access_log : not null \n");
 		exit(-1);
 	}
 
 	struct tm * t;
 
-		if(wangyonglin_file_exists(__log_t->access_log)==0){
-			fprintf(stderr,"it not exists : %s \n",__log_t->access_log);
+		if(wangyonglin_file_exists(__log_t->access)==0){
+			fprintf(stderr,"it not exists : %s \n",__log_t->access);
 			exit(-1);
 		}else{
-			int ret= open(__log_t->access_log, O_RDWR|O_CREAT, 0640);
+			int ret= open(__log_t->access, O_RDWR|O_CREAT, 0640);
 			if(ret!=-1){
 				close(ret);
 			}
 			
 		}
 
-			FILE* fd = fopen(__log_t->access_log,"a");
+			FILE* fd = fopen(__log_t->access,"a");
 			if(fd==NULL){
-				fprintf(stderr,"it open fait : %s \n",__log_t->access_log);
+				fprintf(stderr,"it open fait : %s \n",__log_t->access);
 				exit(-1);
 			}
 			t=wangyonglin_time_now();
@@ -51,7 +51,7 @@ int  wangyonglin_log_init(wangyonglin_log_t * log){
 	return -1;
 }
 void wangyonglin_log_error(wangyonglin_log_levels_t level,const char *format, ...){
-	if(__log_t->error_log == NULL){
+	if(__log_t->error == NULL){
 		fprintf(stderr,"_log_t->error_log : not null \n");
 		exit(-1);
 	}
@@ -78,20 +78,20 @@ void wangyonglin_log_error(wangyonglin_log_levels_t level,const char *format, ..
 				break;
 			}
 
-		if(wangyonglin_file_exists(__log_t->error_log)==0){
-			fprintf(stderr,"it not exists : %s \n",__log_t->error_log);
+		if(wangyonglin_file_exists(__log_t->error)==0){
+			fprintf(stderr,"it not exists : %s \n",__log_t->error);
 			exit(-1);
 		}else{
-			int ret= open(__log_t->error_log, O_RDWR|O_CREAT, 0640);
+			int ret= open(__log_t->error, O_RDWR|O_CREAT, 0640);
 			if(ret!=-1){
 				close(ret);
 			}
 			
 		}
 
-			FILE* fd = fopen(__log_t->error_log,"a+");
+			FILE* fd = fopen(__log_t->error,"a+");
 			if(fd==NULL){
-				fprintf(stderr,"it open fait : %s \n",__log_t->error_log);
+				fprintf(stderr,"it open fait : %s \n",__log_t->error);
 				exit(-1);
 			}
 			t=wangyonglin_time_now();

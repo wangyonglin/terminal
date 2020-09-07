@@ -3,7 +3,7 @@
 #include <wangyonglin/config.h>
 #include <wangyonglin/core.h>
 struct wangyonglin_pid_s{
-	char  filename[128];
+	char  pidname[128];
 };
 
 

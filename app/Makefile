@@ -104,8 +104,10 @@ PROGRAMS = $(bin_PROGRAMS)
 am_terminal_OBJECTS = main.$(OBJEXT) httpserver.$(OBJEXT) \
 	jsonresult.$(OBJEXT) mqttclient.$(OBJEXT)
 terminal_OBJECTS = $(am_terminal_OBJECTS)
-terminal_DEPENDENCIES = ../src/ccl/libccl.la ../src/mqtt/libmqtt.la \
-	../src/cjson/libjson.la ../src/wangyonglin/libcore.la
+terminal_DEPENDENCIES = $(top_srcdir)/src/ccl/libccl.la \
+	$(top_srcdir)/src/mqtt/libmqtt.la \
+	$(top_srcdir)/src/cjson/libjson.la \
+	$(top_srcdir)/src/wangyonglin/libcore.la
 AM_V_lt = $(am__v_lt_$(V))
 am__v_lt_ = $(am__v_lt_$(AM_DEFAULT_VERBOSITY))
 am__v_lt_0 = --silent
@@ -294,10 +296,10 @@ AUTOMAKE_OPTIONS = foreign
 terminal_SOURCES = main.c httpserver.c jsonresult.c mqttclient.c
 AM_CPPFLAGS = -I ../include/
 terminal_LDADD = \
-    ../src/ccl/libccl.la \
-    ../src/mqtt/libmqtt.la \
-    ../src/cjson/libjson.la \
-    ../src/wangyonglin/libcore.la \
+    $(top_srcdir)/src/ccl/libccl.la \
+    $(top_srcdir)/src/mqtt/libmqtt.la \
+    $(top_srcdir)/src/cjson/libjson.la \
+    $(top_srcdir)/src/wangyonglin/libcore.la \
     $(FLIBS)
 
 all: all-am

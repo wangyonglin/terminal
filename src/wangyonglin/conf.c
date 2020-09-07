@@ -7,7 +7,7 @@ int wangyonglin_conf_open(const char * filename){
   conf = (wangyonglin_conf_t *)malloc(sizeof(wangyonglin_conf_t));
   if(conf!=NULL){
       memset(conf,0,sizeof(wangyonglin_conf_t));
-      memcpy(conf->filename,filename,strlen(filename));
+      memcpy(conf->confname,filename,strlen(filename));
   }
 
 	return 0;
@@ -28,7 +28,7 @@ char * wangyonglin_conf_read(const char *key){
     config.comment_char = '#';
     config.sep_char = '=';
     config.str_char = '"';
-    ccl_parse(&config,conf->filename);
+    ccl_parse(&config,conf->confname);
     while((iter = ccl_iterate(&config)) != 0) 
     {
       //printf("(%s,%s)\n", iter->key, iter->value);

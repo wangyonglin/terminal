@@ -1,11 +1,11 @@
 #Terminal MQTT CLIENT
 
-##安装Tengine 编译参数
+##Terminal 编译参数
 ```shell
 ./configure --prefix=/usr/local/terminal
 ```
 
-## 配置wangyonglin开机启动，切换到/lib/systemd/system目录,创建 terminal.service文件：
+## 配置Terminal SERVICE，切换到/lib/systemd/system目录,创建 terminal.service文件：
 ```shell
 [Unit]
 Description=terminal

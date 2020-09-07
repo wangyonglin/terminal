@@ -3,10 +3,10 @@
 
 int wangyonglin_pid_create(wangyonglin_pid_t * pid){
     int pid_fd;
-     if (pid->filename != NULL)
+     if (pid->pidname != NULL)
     {
         char str[256];
-        pid_fd = open(pid->filename , O_RDWR|O_CREAT, 0640);
+        pid_fd = open(pid->pidname , O_RDWR|O_CREAT, 0640);
         if (pid_fd < 0) {
             fprintf(stderr,"Fail to open file!\n");
             exit(EXIT_FAILURE);

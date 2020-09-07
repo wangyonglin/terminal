@@ -5,7 +5,7 @@
 #define wangyonglin_char_t char
 struct wangyonglin_conf_s
 {
-     char filename[128];
+     char confname[128];
      wangyonglin_pid_t * pid;
      wangyonglin_log_t * log;
 };

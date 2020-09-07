@@ -13,3 +13,4 @@ libcore_la_SOURCES=             \
     uart.c
 
 AM_CPPFLAGS=-I ../../include/
+
