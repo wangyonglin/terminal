@@ -1,0 +1,11 @@
+[Unit]
+Description=terminal
+After=network.target
+[Service]
+Type=forking
+ExecStart=/usr/local/terminal/bin/terminal
+ExecReload=/usr/local/terminal/bin/terminal reload
+ExecStop=/usr/local/terminal/bin/terminal quit
+PrivateTmp=true
+[Install]
+WantedBy=multi-user.target
